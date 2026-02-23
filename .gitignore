@@ -1,0 +1,15 @@
+.idea/
+*.iws
+*.iml
+*.ipr
+venv/
+.venv/
+env/
+ENV/
+bin/
+lib/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
