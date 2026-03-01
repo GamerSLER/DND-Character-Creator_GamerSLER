@@ -12,6 +12,8 @@ import requests
 root = Tk()
 frm = ttk.Frame(root, padding=30)
 frm.grid()
+contenedor_competencias = ttk.Frame(frm)
+contenedor_competencias.grid(column=0, row=4, columnspan=2, pady=10)
 
 BASE_URL = "https://www.dnd5eapi.co/api/2014/"
 
@@ -51,26 +53,37 @@ clase_combobox.grid(column=0, row=3)
 def set_clase(): ##funcion a la que llamar al pulsar el botón
     ##Recoger clase escogida en Tkinter y meterla en la variable clase
     global clase, info_clase
-    print(clase_combobox.get())
     clase = clase_combobox.get()
+
     info_clase = requests.get(BASE_URL + "classes/" + clase.lower()).json()
-    print(info_clase)
     mostrar_competencias()
 
 clase_verificar = ttk.Button(frm, text="Verificar Clase", command=set_clase)
 clase_verificar.grid(column=1, row=3)
 
 def mostrar_competencias():
-    competencias_posibles = info_clase["proficiency_choices"]
-    competencias_posibles_nombres = []
-    for competencia in competencias_posibles:
-        ttk.Label(frm, text="Elija sus competencias:").grid(column=0, row=4)
-        for skill in competencia["from"]["options"]:
-            competencias_posibles_nombres.append(skill["item"]["name"])
-        for i in range(competencia["choose"]):
-            ##Pintar un ttk.combobox con competencias_posibles_nombres
-            boton_competencia = ttk.Combobox(frm, values=competencias_posibles_nombres, state="readonly")
-            boton_competencia.grid(column=0, row=5 + i)
+    for widget in contenedor_competencias.winfo_children():
+        widget.destroy()
+    fila_interna = 0
+    for bloque in info_clase["proficiency_choices"]:
+        ttk.Label(contenedor_competencias, text=bloque["desc"]).grid(column=0, row=fila_interna, pady=5)
+        fila_interna += 1
+        opciones_limpias = []
+
+        for opcion_competencia in bloque["from"]["options"]:
+            if "item" in opcion_competencia:
+                opciones_limpias.append(opcion_competencia["item"]["name"])
+
+            elif "choice" in opcion_competencia:
+                sub_lista_competencias = opcion_competencia["choice"]["from"]["options"]
+                for sub_opcion in sub_lista_competencias:
+                    if "item" in sub_opcion:
+                        opciones_limpias.append(sub_opcion["item"]["name"])
+
+        for i in range(bloque["choose"]):
+            combo = ttk.Combobox(contenedor_competencias, values=opciones_limpias, state="readonly", width=50)
+            combo.grid(column=0, row=fila_interna, pady=2)
+            fila_interna += 1
 
 
 '''ENCIMA LO QUE SE USA PARA TKINTER'''
