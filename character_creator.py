@@ -64,12 +64,13 @@ def mostrar_competencias():
     competencias_posibles = info_clase["proficiency_choices"]
     competencias_posibles_nombres = []
     for competencia in competencias_posibles:
+        ttk.Label(frm, text="Elija sus competencias:").grid(column=0, row=4)
         for skill in competencia["from"]["options"]:
             competencias_posibles_nombres.append(skill["item"]["name"])
         for i in range(competencia["choose"]):
             ##Pintar un ttk.combobox con competencias_posibles_nombres
             boton_competencia = ttk.Combobox(frm, values=competencias_posibles_nombres, state="readonly")
-            boton_competencia.grid(column=0, row=4 + i)
+            boton_competencia.grid(column=0, row=5 + i)
 
 
 '''ENCIMA LO QUE SE USA PARA TKINTER'''
