@@ -50,7 +50,7 @@ def set_proficiencias():
     print(competencias)
 
 def mostrar_info_raza():
-    global tipos_stats
+    global tipos_stats, info_raza
     for widget in contenedor_info_raza.winfo_children():
         widget.destroy()
     info_raza = requests.get(BASE_URL + "races/" + raza.lower()).json()
@@ -81,22 +81,36 @@ def mostrar_info_raza():
 def generate_stats():
     global tipos_stats
     minimo_requerido = False
+    stats = []
     while not minimo_requerido:
         sum_stats = 0
-        stats = []
         for i in range(6):
             stat = r.randint(3, 18)
-            stats.append(stat)
+            stats.append([tipos_stats_nombres[i], stat])
             sum_stats += stat
         if sum_stats >= 72:
             minimo_requerido = True
 
+    stat_bonuses = get_stat_bonus()
+    for stat in stat_bonuses:
+        posicion_stat = tipos_stats_nombres.index(stat[0])
+        stats[posicion_stat][1] += stat[1]
+
+
     for i in range(len(tipos_stats)):
         tipos_stats[i].config(state="normal")
         tipos_stats[i].delete(0, END)
-        tipos_stats[i].insert(0, str(stats[i]))
+        tipos_stats[i].insert(0, str(stats[i][1]))
         tipos_stats[i].config(state="readonly")
     print(f"Suma total conseguida: {sum_stats}")
+
+def get_stat_bonus():
+    stats_bonuses = []
+    stats_bonuses_json = requests.get(BASE_URL + "races/" + raza.lower()).json()["ability_bonuses"]
+    for stat in stats_bonuses_json:
+        stats_bonuses.append((stat["ability_score"]["name"], stat["bonus"]))
+    return stats_bonuses
+
 
 def mostrar_stats():
     btn_generate = ttk.Button(contenedor_stats, text="Generate", command=generate_stats)
@@ -188,7 +202,8 @@ BASE_URL = "https://www.dnd5eapi.co/api/2014/"
 nombre = None
 clase = ""
 raza = ""
-info_clase = None
+info_clase = {}
+info_raza = {}
 competencias_armas = []
 competencias_habilidades = []
 competencias_herramientas = []
@@ -237,5 +252,6 @@ contenedor_stats = ttk.LabelFrame(frm, text="Stats", padding="10")
 contenedor_stats.grid(column=0, row=8, columnspan=2, pady=10)
 
 #tipos_stats = [intelligence, strength, dexterity, wisdom, constitution]
+tipos_stats_nombres = ["INT", "STR", "DEX", "WIS", "CON", "CHA"]
 
 root.mainloop()
