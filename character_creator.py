@@ -8,40 +8,6 @@ import requests
 
 '''!!! No vamos a meter ni multiclases ni subclases !!!'''
 
-root = Tk()
-frm = ttk.Frame(root, padding=30)
-frm.place(relx=0.5, rely=0.2, anchor="center")
-contenedor_competencias = ttk.Frame(frm)
-contenedor_competencias.grid(column=0, row=4, columnspan=2, pady=10)
-
-BASE_URL = "https://www.dnd5eapi.co/api/2014/"
-
-root.title("DnD")
-root.geometry("800x500")
-root.update()
-
-ancho = 800
-alto = 500
-
-x = (root.winfo_screenwidth() // 2) - (ancho // 2)
-y = (root.winfo_screenheight() // 2) - (alto // 2)
-
-root.geometry(f"{ancho}x{alto}+{x}+{y}")
-
-nombre = None
-clase = None
-info_clase = None
-competencias_armas = []
-competencias_habilidades = []
-competencias_herramientas = []
-
-# Hay que cambiar cosas para que se manejen
-# los inputs en Tkinter
-
-opciones_clases =[] ##Usarlo en el campo de opciones de clase para que aparezcan en un menú desplegable y poner un botón de confirmar al lado.
-ttk.Label(frm, text="Introduce nombre:").grid(column=0, row=0)
-nombre_entry = ttk.Entry(frm, width=30)
-nombre_entry.grid(column=0, row=1)
 """Funciones"""
 
 def set_nombre():
@@ -50,9 +16,6 @@ def set_nombre():
     print(nombre_entry.get())
     nombre = nombre_entry.get()
     print(nombre)
-
-
-
 
 def set_races():
     razas = []
@@ -127,7 +90,7 @@ def mostrar_competencias():
 
         for i in range(bloque["choose"]):
             combo = ttk.Combobox(contenedor_competencias, values=opciones_limpias, state="readonly", width=50)
-            combo.grid(column=0, row=fila_interna, pady=2)
+            combo.place(x=10, y=50 * fila_interna)
             fila_interna += 1
 
 def get_items_from_category(url_categoria):
@@ -169,7 +132,7 @@ def mostrar_equipamiento():
 
         for i in range(bloque["choose"]):
             combo = ttk.Combobox(contenedor_equipamiento, values=opciones_finales, state="readonly", width=60)
-            combo.grid(column=0, row=fila, pady=2)
+            combo.place(x=20, y=50 * fila)
             fila += 1
 
 
@@ -183,8 +146,7 @@ y = (root.winfo_screenheight() // 2) - (alto // 2)
 root.geometry(f"{ancho}x{alto}+{x}+{y}")
 
 frm = ttk.Frame(root, padding=30)
-frm.grid()
-frm.place(relx=0.5, rely=0.3, anchor="center")
+frm.place(relx=0.5, rely=0.5, anchor="center")
 contenedor_competencias = ttk.LabelFrame(frm, text="Competencias", padding="10")
 contenedor_competencias.grid(column=0, row=6, columnspan=2, pady=10)
 contenedor_equipamiento = ttk.LabelFrame(frm, text="Equipamiento Inicial", padding="10")
