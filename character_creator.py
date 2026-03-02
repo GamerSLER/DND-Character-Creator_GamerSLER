@@ -1,7 +1,4 @@
-import json
 import random as r
-from asyncio.windows_events import NULL
-from stat import FILE_ATTRIBUTE_ARCHIVE
 
 from tkinter import *
 from tkinter import ttk
@@ -19,8 +16,6 @@ def set_nombre():
     print(nombre)
 
 def set_races():
-    global all_razas
-
     razas = []
     all_razas = requests.get(BASE_URL + "races").json()["results"]
 
@@ -51,6 +46,7 @@ def set_proficiencias(): ##función que recoge las  proficiencias de cada clase.
     print(competencias)
 
 def generate_stats():
+    global stats, sum_stats
     stats_tipos = [intelligence, strength, dexterity, wisdom, constitution, charisma]
     minimo_requerido = False
     while not minimo_requerido:
@@ -160,7 +156,7 @@ frm.place(relx=0.5, rely=0.2, anchor="center")
 BASE_URL = "https://www.dnd5eapi.co/api/2014/"
 
 nombre = None
-clase = None
+clase = ""
 info_clase = None
 competencias_armas = []
 competencias_habilidades = []
@@ -169,7 +165,6 @@ hit_die = None
 tiradas_de_salvacion = []
 equipamiento_de_comienzo = []
 
-opciones_clases =[] ##Usarlo en el campo de opciones de clase para que aparezcan en un menú desplegable y poner un botón de confirmar al lado.
 ttk.Label(frm, text="Introduce nombre:").grid(column=0, row=0)
 nombre_entry = ttk.Entry(frm, width=30)
 nombre_entry.insert(0, "Nombre")
