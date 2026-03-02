@@ -11,36 +11,7 @@ import requests
 
 '''!!! No vamos a meter ni multiclases ni subclases !!!'''
 
-root = Tk()
-frm = ttk.Frame(root, padding=30)
-frm.grid()
-contenedor_competencias = ttk.LabelFrame(root, text="Competencias", padding="10")
-contenedor_competencias.grid(column=0, row=3, columnspan=2, pady=10)
-
-contenedor_equipamiento = ttk.LabelFrame(root, text="Equipamiento Inicial", padding="10")
-contenedor_equipamiento.grid(column=0, row=4, padx=10, pady=10)
-
-BASE_URL = "https://www.dnd5eapi.co/api/2014/"
-
-root.title("DnD")
-root.geometry("800x500")
-
 """Funciones"""
-nombre = None
-clase = None
-info_clase = None
-hit_die = None
-tiradas_de_salvacion = []
-equipamiento_de_comienzo = []
-competencias_armas = []
-competencias_habilidades = []
-# Hay que cambiar cosas para que se manejen
-# los inputs en Tkinter
-
-opciones_clases =[] ##Usarlo en el campo de opciones de clase para que aparezcan en un menú desplegable y poner un botón de confirmar al lado.
-ttk.Label(frm, text="Introduce nombre:").grid(column=0, row=0)
-nombre_entry = ttk.Entry(frm, width=30)
-nombre_entry.grid(column=0, row=1)
 
 def set_nombre():
     ##Lo mismo pero con el nombre
@@ -49,11 +20,8 @@ def set_nombre():
     nombre = nombre_entry.get()
     print(nombre)
 
-opciones_clases =[] ##Usarlo en el campo de opciones de clase y poner un botón de confirmar al lado.
-opciones = requests.get(BASE_URL + "classes/").json()["results"]
-print("Clases disponibles:\n")
-for opcion in opciones:
-    opciones_clases.append(opcion["name"])
+
+
 
 def set_races():
     global all_razas
@@ -72,10 +40,6 @@ def set_proficiencias(): ##función que recoge las  proficiencias de cada clase.
     for competencia in competencias_armas:
         competencias.append(competencia["name"])
     print(competencias)
-
-clase_combobox=Combobox(frm, values=opciones_clases, state="readonly")
-clase_combobox.current(0)
-clase_combobox.grid(column=0, row=3, padx=10, pady=20)
 
 def set_clase(): ##funcion a la que llamar al pulsar el botón
     ##Recoger clase escogida en Tkinter y meterla en la variable clase
@@ -110,6 +74,7 @@ def set_proficiencias(): ##función que recoge las  proficiencias de cada clase.
     competencias.pop()
     print(competencias)
 
+
 def generate_stats():
     stats_tipos = [intelligence, strength, dexterity, wisdom, constitution, charisma]
     minimo_requerido = False
@@ -129,10 +94,6 @@ def generate_stats():
         stats_tipos[i].insert(0, str(stats[i]))
         stats_tipos[i].config(state="readonly")
     print(f"Suma total conseguida: {sum_stats}")
-
-
-clase_verificar = ttk.Button(frm, text="Verificar Clase", command=set_clase)
-clase_verificar.grid(column=1, row=3)
 
 def mostrar_competencias():
     for widget in contenedor_competencias.winfo_children():
@@ -205,9 +166,12 @@ def mostrar_equipamiento():
 root = Tk()
 frm = ttk.Frame(root, padding=30)
 frm.grid()
-contenedor_competencias = ttk.Frame(frm)
-contenedor_competencias.grid(column=0, row=4, columnspan=2, pady=10)
-contenedor_stats = ttk.Frame(frm)
+contenedor_competencias = ttk.LabelFrame(root, text="Competencias", padding="10")
+contenedor_competencias.grid(column=0, row=3, columnspan=2, pady=10)
+contenedor_equipamiento = ttk.LabelFrame(root, text="Equipamiento Inicial", padding="10")
+contenedor_equipamiento.grid(column=0, row=4, padx=10, pady=10)
+
+contenedor_stats = ttk.LabelFrame(root, text="Stats", padding="10")
 contenedor_stats.grid(column=0, row=6, pady=10)
 
 BASE_URL = "https://www.dnd5eapi.co/api/2014/"
@@ -221,6 +185,9 @@ info_clase = None
 competencias_armas = []
 competencias_habilidades = []
 competencias_herramientas = []
+hit_die = None
+tiradas_de_salvacion = []
+equipamiento_de_comienzo = []
 
 # Hay que cambiar cosas para que se manejen
 # los inputs en Tkinter
@@ -231,8 +198,6 @@ nombre_entry = ttk.Entry(frm, width=30)
 nombre_entry.insert(0, "Nombre")
 nombre_entry.grid(column=0, row=1)
 
-
-opciones_clases =[] ##Usarlo en el campo de opciones de clase y poner un botón de confirmar al lado.
 opciones = requests.get(BASE_URL + "classes/").json()["results"]
 print("Clases disponibles:\n")
 for opcion in opciones:
