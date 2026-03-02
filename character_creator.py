@@ -25,6 +25,7 @@ def get_races():
 def set_races():
     global raza
     raza = raza_combobox.get()
+    mostrar_stats()
     mostrar_info_raza()
 
 def mostrar_info_raza():
@@ -56,9 +57,8 @@ def set_proficiencias():
         competencias.pop()
     print(competencias)
 
-def generate_stats():
+def generate_stats(tipos):
     global stats, sum_stats
-    stats_tipos = [intelligence, strength, dexterity, wisdom, constitution, charisma]
     minimo_requerido = False
     while not minimo_requerido:
         sum_stats = 0
@@ -70,12 +70,41 @@ def generate_stats():
         if sum_stats >= 72:
             minimo_requerido = True
 
-    for i in range(len(stats_tipos)):
-        stats_tipos[i].config(state="normal")
-        stats_tipos[i].delete(0, END)
-        stats_tipos[i].insert(0, str(stats[i]))
-        stats_tipos[i].config(state="readonly")
+    for i in range(len(tipos)):
+        tipos[i].config(state="normal")
+        tipos[i].delete(0, END)
+        tipos[i].insert(0, str(stats[i]))
+        tipos[i].config(state="readonly")
     print(f"Suma total conseguida: {sum_stats}")
+
+def mostrar_stats():
+
+    contenedor_stats = ttk.LabelFrame(frm, text="Stats", padding="10")
+    contenedor_stats.grid(column=0, row=8, columnspan=2, pady=10)
+
+    intelligence = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    intelligence.grid(column=0, row=1, padx=3)
+
+    strength = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    strength.grid(column=1, row=1, padx=3)
+
+    dexterity = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    dexterity.grid(column=2, row=1, padx=3)
+
+    wisdom = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    wisdom.grid(column=3, row=1, padx=3)
+
+    constitution = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    constitution.grid(column=4, row=1, padx=3)
+
+    charisma = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    charisma.grid(column=5, row=1, padx=3)
+
+    btn_generate = ttk.Button(contenedor_stats, text="Generate", command=generate_stats)
+    btn_generate.grid(column=6, row=1, padx=10)
+
+    stats_tipos = [intelligence, strength, dexterity, wisdom, constitution, charisma]
+    generate_stats(stats_tipos)
 
 def mostrar_competencias():
     for widget in contenedor_competencias.winfo_children():
@@ -158,6 +187,7 @@ frm.columnconfigure(1, weight=1)
 
 BASE_URL = "https://www.dnd5eapi.co/api/2014/"
 
+
 nombre = None
 clase = ""
 raza = ""
@@ -202,31 +232,7 @@ contenedor_competencias.grid(column=0, row=6, columnspan=2, pady=10, sticky="nse
 contenedor_equipamiento = ttk.LabelFrame(frm, text="Equipamiento Inicial", padding="10")
 contenedor_equipamiento.grid(column=0, row=7, columnspan=2, pady=10, sticky="nsew")
 
-contenedor_stats = ttk.LabelFrame(frm, text="Stats", padding="10")
-contenedor_stats.grid(column=0, row=8, columnspan=2, pady=10)
-
 contenedor_info_raza = ttk.LabelFrame(frm, text="Info " + raza, padding="10")
 contenedor_info_raza.grid(column=0, row=9, padx=10)
-
-intelligence = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-intelligence.grid(column=0, row=1, padx=3)
-
-strength = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-strength.grid(column=1, row=1, padx=3)
-
-dexterity = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-dexterity.grid(column=2, row=1, padx=3)
-
-wisdom = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-wisdom.grid(column=3, row=1, padx=3)
-
-constitution = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-constitution.grid(column=4, row=1, padx=3)
-
-charisma = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-charisma.grid(column=5, row=1, padx=3)
-
-btn_generate = ttk.Button(contenedor_stats, text="Generate", command=generate_stats)
-btn_generate.grid(column=6, row=1, padx=10)
 
 root.mainloop()
