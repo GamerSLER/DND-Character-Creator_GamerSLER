@@ -88,6 +88,7 @@ def mostrar_competencias():
 
         for i in range(bloque["choose"]):
             combo = ttk.Combobox(contenedor_competencias, values=opciones_limpias, state="readonly", width=50)
+            combo.current(0)
             combo.grid(column=0, row=fila_interna, pady=2)
             fila_interna += 1
 
@@ -130,6 +131,7 @@ def mostrar_equipamiento():
 
         for i in range(bloque["choose"]):
             combo = ttk.Combobox(contenedor_equipamiento, values=opciones_finales, state="readonly", width=60)
+            combo.current(0)
             combo.grid(column=0, row=fila, pady=2)
             fila += 1
 
