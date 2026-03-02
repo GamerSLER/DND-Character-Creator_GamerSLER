@@ -15,14 +15,21 @@ def set_nombre():
     nombre = nombre_entry.get()
     print(nombre)
 
+# def set_races():
+#     razas = []
+#     all_razas = requests.get(BASE_URL + "races").json()["results"]
+#
+#     for raza in all_razas:
+#         razas.append(raza["name"])
+#     print(razas)
+#     mostrar_stats()
+#     return razas
 def set_races():
-    razas = []
-    all_razas = requests.get(BASE_URL + "races").json()["results"]
+    global raza
+    raza = raza_combombox.get()
+    print("Raza seleccionada:", raza)
 
-    for raza in all_razas:
-        razas.append(raza["name"])
-    print(razas)
-    return razas
+    mostrar_stats()
 
 def set_clase(): ##funcion a la que llamar al pulsar el botón
     ##Recoger clase escogida en Tkinter y meterla en la variable clase
@@ -66,6 +73,29 @@ def generate_stats():
         stats_tipos[i].insert(0, str(stats[i]))
         stats_tipos[i].config(state="readonly")
     print(f"Suma total conseguida: {sum_stats}")
+
+def mostrar_stats():
+    global intelligence, strength, dexterity, wisdom, constitution, charisma
+    intelligence = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    intelligence.grid(column=0, row=1, padx=3)
+
+    strength = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    strength.grid(column=1, row=1, padx=3)
+
+    dexterity = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    dexterity.grid(column=2, row=1, padx=3)
+
+    wisdom = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    wisdom.grid(column=3, row=1, padx=3)
+
+    constitution = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    constitution.grid(column=4, row=1, padx=3)
+
+    charisma = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
+    charisma.grid(column=5, row=1, padx=3)
+
+    btn_generate = ttk.Button(contenedor_stats, text="Generate", command=generate_stats)
+    btn_generate.grid(column=6, row=1, padx=10)
 
 def mostrar_competencias():
     for widget in contenedor_competencias.winfo_children():
@@ -161,25 +191,25 @@ hit_die = None
 tiradas_de_salvacion = []
 equipamiento_de_comienzo = []
 
-ttk.Label(frm, text="Introduce nombre:").grid(column=0, row=0)
+ttk.Label(frm, text="Enter your name:").grid(column=0, row=0)
 nombre_entry = ttk.Entry(frm, width=30)
-nombre_entry.insert(0, "Nombre")
+nombre_entry.insert(0, "name")
 nombre_entry.grid(column=0, row=1)
 
 
 opciones_clases =[] ##Usarlo en el campo de opciones de clase y poner un botón de confirmar al lado.
 opciones = requests.get(BASE_URL + "classes/").json()["results"]
-print("Clases disponibles:\n")
+# print("Clases disponibles:\n")
 for opcion in opciones:
     opciones_clases.append(opcion["name"])
 
-ttk.Label(frm, text="Select clase:").grid(column=0, row=2, pady=(15, 0))
+ttk.Label(frm, text="Select Class:").grid(column=0, row=2, pady=(15, 0))
 
 clase_combobox=Combobox(frm, values=opciones_clases, state="readonly")
 clase_combobox.current(0)
 clase_combobox.grid(column=0, row=3)
 
-clase_verificar = ttk.Button(frm, text="Verificar Clase", command=set_clase)
+clase_verificar = ttk.Button(frm, text="Verify Class", command=set_clase)
 clase_verificar.grid(column=1, row=3)
 
 ttk.Label(frm, text="Select race:").grid(column=0, row=6, pady=(15, 0))
@@ -187,7 +217,7 @@ raza_combombox = Combobox(frm, values=set_races(), state="readonly")
 raza_combombox.current(0)
 raza_combombox.grid(column=0, row=7)
 
-raza_verificar = ttk.Button(frm, text="Verify race", command=set_races)
+raza_verificar = ttk.Button(frm, text="Verify Race", command=set_races)
 raza_verificar.grid(column=1, row=7)
 
 contenedor_competencias = ttk.LabelFrame(frm, text="Competencias", padding="10")
@@ -199,26 +229,5 @@ contenedor_equipamiento.grid(column=0, row=5, padx=10, pady=10)
 contenedor_stats = ttk.LabelFrame(frm, text="Stats", padding="10")
 contenedor_stats.grid(column=0, row=8, pady=10)
 contenedor_stats.config(cursor="target")
-
-intelligence = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-intelligence.grid(column=0, row=1, padx=3)
-
-strength = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-strength.grid(column=1, row=1, padx=3)
-
-dexterity = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-dexterity.grid(column=2, row=1, padx=3)
-
-wisdom = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-wisdom.grid(column=3, row=1, padx=3)
-
-constitution = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-constitution.grid(column=4, row=1, padx=3)
-
-charisma = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
-charisma.grid(column=5, row=1, padx=3)
-
-btn_generate = ttk.Button(contenedor_stats, text="Generate", command=generate_stats)
-btn_generate.grid(column=6, row=1, padx=10)
 
 root.mainloop()
