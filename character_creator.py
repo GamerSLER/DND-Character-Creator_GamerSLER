@@ -143,7 +143,7 @@ hit_die = None
 tiradas_de_salvacion = []
 equipamiento_de_comienzo = []
 
-# Nombre centrado usando columnspan
+""""Diseño de interfaz"""
 ttk.Label(frm, text="Introduce nombre:").grid(column=0, row=0, columnspan=2)
 nombre_entry = ttk.Entry(frm, width=30)
 nombre_entry.insert(0, "Nombre")
@@ -154,7 +154,6 @@ opciones = requests.get(BASE_URL + "classes/").json()["results"]
 for opcion in opciones:
     opciones_clases.append(opcion["name"])
 
-# Clase
 ttk.Label(frm, text="Select clase:").grid(column=0, row=2, pady=(15, 0), columnspan=2)
 clase_combobox = Combobox(frm, values=opciones_clases, state="readonly")
 clase_combobox.current(0)
@@ -162,7 +161,6 @@ clase_combobox.grid(column=0, row=3, padx=5, sticky="e")
 clase_verificar = ttk.Button(frm, text="Verificar Clase", command=set_clase)
 clase_verificar.grid(column=1, row=3, padx=5, sticky="w")
 
-# Raza
 ttk.Label(frm, text="Select race:").grid(column=0, row=4, pady=(15, 0), columnspan=2)
 raza_combombox = Combobox(frm, values=set_races(), state="readonly")
 raza_combombox.current(0)
@@ -170,7 +168,6 @@ raza_combombox.grid(column=0, row=5, padx=5, sticky="e")
 raza_verificar = ttk.Button(frm, text="Verify race", command=set_races)
 raza_verificar.grid(column=1, row=5, padx=5, sticky="w")
 
-# Contenedores dinámicos
 contenedor_competencias = ttk.LabelFrame(frm, text="Competencias", padding="10")
 contenedor_competencias.grid(column=0, row=6, columnspan=2, pady=10, sticky="nsew")
 
@@ -179,11 +176,6 @@ contenedor_equipamiento.grid(column=0, row=7, columnspan=2, pady=10, sticky="nse
 
 contenedor_stats = ttk.LabelFrame(frm, text="Stats", padding="10")
 contenedor_stats.grid(column=0, row=8, columnspan=2, pady=10)
-
-# Labels de Stats
-labels_nombres = ["INT", "STR", "DEX", "WIS", "CON", "CHA"]
-for i, l in enumerate(labels_nombres):
-    ttk.Label(contenedor_stats, text=l).grid(column=i, row=0)
 
 intelligence = ttk.Entry(contenedor_stats, width=5, state="readonly", justify="center")
 intelligence.grid(column=0, row=1, padx=3)
