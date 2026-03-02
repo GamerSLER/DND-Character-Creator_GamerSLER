@@ -11,7 +11,44 @@ import requests
 
 '''!!! No vamos a meter ni multiclases ni subclases !!!'''
 
+<<<<<<< master
+root = Tk()
+frm = ttk.Frame(root, padding=30)
+frm.place(relx=0.5, rely=0.2, anchor="center")
+contenedor_competencias = ttk.Frame(frm)
+contenedor_competencias.grid(column=0, row=4, columnspan=2, pady=10)
+
+BASE_URL = "https://www.dnd5eapi.co/api/2014/"
+
+root.title("DnD")
+root.geometry("800x500")
+root.update()
+
+ancho = 800
+alto = 500
+
+x = (root.winfo_screenwidth() // 2) - (ancho // 2)
+y = (root.winfo_screenheight() // 2) - (alto // 2)
+
+root.geometry(f"{ancho}x{alto}+{x}+{y}")
+
+nombre = None
+clase = None
+info_clase = None
+competencias_armas = []
+competencias_habilidades = []
+competencias_herramientas = []
+
+# Hay que cambiar cosas para que se manejen
+# los inputs en Tkinter
+
+opciones_clases =[] ##Usarlo en el campo de opciones de clase para que aparezcan en un menú desplegable y poner un botón de confirmar al lado.
+ttk.Label(frm, text="Introduce nombre:").grid(column=0, row=0)
+nombre_entry = ttk.Entry(frm, width=30)
+nombre_entry.grid(column=0, row=1)
+=======
 """Funciones"""
+>>>>>>> master
 
 def set_nombre():
     ##Lo mismo pero con el nombre
@@ -244,5 +281,10 @@ ttk.Button(contenedor_stats, text="Generate", command=generate_stats).grid(colum
 
 '''ENCIMA LO QUE SE USA PARA TKINTER'''
 
+root.update()
 
+x = (root.winfo_screenwidth() // 2) - (800 // 2)
+y = (root.winfo_screenheight() // 2) - (500 // 2)
+
+root.geometry(f"800x500+{x}+{y}")
 root.mainloop()
