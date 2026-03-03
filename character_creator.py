@@ -3,6 +3,8 @@ import random as r
 from tkinter import *
 from tkinter import ttk
 from tkinter.ttk import Combobox
+
+from django.template.defaultfilters import join
 from playsound3 import playsound
 from PIL import Image, ImageTk
 import pygame
@@ -80,8 +82,10 @@ def mostrar_info_raza():
     info_traits = [trait["name"] for trait in info_raza["traits"]]
     print(info_traits)
 
-    ttk.Label(contenedor_info_raza, text="Speed: " + str(info_raza["speed"])).grid(column=0, row=0, pady=5, sticky="w")
-    ttk.Label(contenedor_info_raza, text="Size: " + info_raza["size_description"], wraplength=400).grid(column=0, row=1, pady=5, sticky="w")
+    label_velocidad = ttk.Label(contenedor_info_raza, text="Speed: " + str(info_raza["speed"]))
+    label_velocidad.grid(column=0, row=0, pady=5, sticky="w")
+    label_tamano = ttk.Label(contenedor_info_raza, text="Size: " + info_raza["size_description"], wraplength=400)
+    label_tamano.grid(column=0, row=1, pady=5, sticky="w")
     languages = [language["name"] for language in info_raza["languages"]]
     languages_str = ", ".join(languages)
     ttk.Label(contenedor_info_raza, text="Languages: " + languages_str).grid(column=0, row=2, pady=5, sticky="w")
@@ -210,9 +214,12 @@ def mostrar_equipamiento():
                 fila += 1
 
 def mostrar_datos():
+    #NOMBRE
     set_nombre()
     print(nombre)
+    #CLASE
     print(clase)
+    #RAZA
     print(raza)
     #STATS
     for tipo, stat in stats:
@@ -220,16 +227,25 @@ def mostrar_datos():
     #COMPETENCIAS ARMAS
     competencias_armas = []
     for i in range(1, len(contenedor_competencias.winfo_children())):
-        competencias_armas.append(contenedor_competencias.winfo_children()[i].get())
+        try:
+            competencias_armas.append(contenedor_competencias.winfo_children()[i].get())
+        except:
+            pass
     competencias_armas = join(competencias_armas, ", ")
     print(competencias_armas)
     #EQUIPAMIENTO INICIAL
     equipamiento_de_inicio = []
-    for i in range(0, len(contenedor_equipamiento.winfo_children())):
-        if i % 2 != 0:
+    for i in range(len(contenedor_equipamiento.winfo_children())):
+        try:
             equipamiento_de_inicio.append(contenedor_equipamiento.winfo_children()[i].get())
+        except:
+            pass
     print(equipamiento_de_inicio)
-
+    #INFO
+    print(info_speed)
+    print(info_lenguajes)
+    print(info_traits)
+    #BACKSTORY
     print(backstory.get("1.0", "end"))
 
 root = Tk()
@@ -362,5 +378,6 @@ guardar = ttk.Button(frm, text="Guardar personaje", command=mostrar_datos)
 guardar.grid(column=0, row=11, columnspan=2, padx=5, sticky="w")
 # EXCEL
 root_characters = "character.csv"
+
 
 root.mainloop()
