@@ -97,6 +97,9 @@ def mostrar_info_raza():
         info_caracteristica = requests.get(BASE_URL + "traits/" + info_caracteristicas[i]["index"]).json()
         ttk.Label(contenedor_info_raza, wraplength=500, text=f"{info_caracteristica['name']}: {info_caracteristica['desc']}").grid(column=0, row=4+i, pady=5, sticky="w")
     generate_stats()
+    guardar = ttk.Button(frm, text="Guardar personaje", command=mostrar_datos)
+    guardar.grid(column=0, row=11, columnspan=2, padx=5, sticky="w")
+    root.destroy()
 
 def generate_stats():
     global nombre_stats, prioridad_stats, clase, tipos_stats, stats
@@ -219,7 +222,7 @@ def mostrar_equipamiento():
                 fila += 1
 
 def mostrar_datos():
-    global competencias_armas
+    global competencias_armas, stat
     #NOMBRE
     set_nombre()
     print(f"Nombre: {nombre}")
@@ -255,8 +258,14 @@ def mostrar_datos():
     print(f"lenguajes:{info_lenguajes}")
     print(f"Informacion demás:{info_traits}")
     #BACKSTORY
+    backstory_text = backstory.get("1.0", "end")
     print(f"Backstory:{backstory.get("1.0", "end")}")
-    return [nombre, clase, raza, stat_actual, competencias_armas, equipamiento_de_inicio, info_speed, info_size_description, info_lenguajes, info_traits, backstory]
+    datos = (nombre,clase,raza,stat,stat,stat,stat,stat,stat,competencias_armas,equipamiento_de_inicio,info_speed,info_size_description,info_lenguajes,info_traits,backstory_text)
+    with open("character.csv", "a") as f:
+        for dato in datos:
+            print(f"{dato}")
+            f.write(dato)
+        f.close()
 
 
 root = Tk()
@@ -386,8 +395,6 @@ contenedor_story.grid(column=0, row=10, columnspan=2, pady=(10, 0), sticky="nsew
 backstory = ScrolledText(contenedor_story, width=60, height=10)
 backstory.pack(padx=10, pady=10)
 
-guardar = ttk.Button(frm, text="Guardar personaje", command=mostrar_datos)
-guardar.grid(column=0, row=11, columnspan=2, padx=5, sticky="w")
 # EXCEL
 root_characters = "character.csv"
 
