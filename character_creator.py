@@ -4,7 +4,6 @@ from tkinter import *
 from tkinter import ttk
 from tkinter.ttk import Combobox
 
-from django.template.defaultfilters import join
 from playsound3 import playsound
 from PIL import Image, ImageTk
 import pygame
@@ -173,12 +172,16 @@ def get_items_from_category(url_categoria):
     data = requests.get("https://www.dnd5eapi.co" + url_categoria).json()
     return [item["name"] for item in data["equipment"]]
 
-
 def mostrar_equipamiento():
+    global equipamiento_de_inicio_default
     for widget in contenedor_equipamiento.winfo_children():
         widget.destroy()
 
     fila = 0
+    equipamiento_de_inicio_default = []
+    for equipamiento in info_clase["starting_equipment"]:
+        equipamiento_de_inicio_default.append(f"{equipamiento['quantity']}x {equipamiento['equipment']['name']}")
+
     for bloque in info_clase["starting_equipment_options"]:
         ttk.Label(contenedor_equipamiento, text=bloque["desc"]).grid(column=0, row=fila, pady=(10, 2), sticky="w")
         fila += 1
@@ -214,6 +217,7 @@ def mostrar_equipamiento():
                 fila += 1
 
 def mostrar_datos():
+    global competencias_armas
     #NOMBRE
     set_nombre()
     print(nombre)
@@ -231,15 +235,16 @@ def mostrar_datos():
             competencias_armas.append(contenedor_competencias.winfo_children()[i].get())
         except:
             pass
-    competencias_armas = join(competencias_armas, ", ")
+    competencias_armas = ", ".join(competencias_armas)
     print(competencias_armas)
     #EQUIPAMIENTO INICIAL
-    equipamiento_de_inicio = []
     for i in range(len(contenedor_equipamiento.winfo_children())):
         try:
             equipamiento_de_inicio.append(contenedor_equipamiento.winfo_children()[i].get())
         except:
             pass
+    for equpamiento in equipamiento_de_inicio_default:
+        equipamiento_de_inicio.append(equpamiento)
     print(equipamiento_de_inicio)
     #INFO
     print(info_speed)
@@ -247,6 +252,7 @@ def mostrar_datos():
     print(info_traits)
     #BACKSTORY
     print(backstory.get("1.0", "end"))
+
 
 root = Tk()
 root.title("DnD")
@@ -315,9 +321,10 @@ info_raza = {}
 competencias_armas = []
 competencias_habilidades = []
 competencias_herramientas = []
+equipamiento_de_inicio = []
+equipamiento_de_inicio_default = []
 hit_die = None
 tiradas_de_salvacion = []
-equipamiento_de_comienzo = []
 nombre_stats = ["INT", "STR", "DEX", "WIS", "CON", "CHA"]
 tipos_stats = []
 backstory = ""
