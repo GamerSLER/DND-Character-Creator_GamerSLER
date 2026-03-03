@@ -175,10 +175,15 @@ def get_items_from_category(url_categoria):
 
 
 def mostrar_equipamiento():
+    global equipamiento_de_inicio_default
     for widget in contenedor_equipamiento.winfo_children():
         widget.destroy()
 
     fila = 0
+    equipamiento_de_inicio_default = []
+    for equipamiento in info_clase["starting_equipment"]:
+        equipamiento_de_inicio_default.append(f"{equipamiento['quantity']}x {equipamiento['equipment']['name']}")
+
     for bloque in info_clase["starting_equipment_options"]:
         ttk.Label(contenedor_equipamiento, text=bloque["desc"]).grid(column=0, row=fila, pady=(10, 2), sticky="w")
         fila += 1
@@ -214,6 +219,7 @@ def mostrar_equipamiento():
                 fila += 1
 
 def mostrar_datos():
+    global competencias_armas
     #NOMBRE
     set_nombre()
     print(f"Nombre: {nombre}")
@@ -231,7 +237,7 @@ def mostrar_datos():
             competencias_armas.append(contenedor_competencias.winfo_children()[i].get())
         except:
             pass
-    competencias_armas = join(competencias_armas, ", ")
+    competencias_armas = ", ".join(competencias_armas)
     print(f"competencias en armas: {competencias_armas}")
     #EQUIPAMIENTO INICIAL
     equipamiento_de_inicio = []
@@ -240,6 +246,8 @@ def mostrar_datos():
             equipamiento_de_inicio.append(contenedor_equipamiento.winfo_children()[i].get())
         except:
             pass
+    for equpamiento in equipamiento_de_inicio_default:
+        equipamiento_de_inicio.append(equpamiento)
     print(f"equipamiento de inicio: {equipamiento_de_inicio}")
     #INFO
     print(f"tamano: {info_size_description}")
@@ -249,6 +257,7 @@ def mostrar_datos():
     #BACKSTORY
     print(f"Backstory:{backstory.get("1.0", "end")}")
     return [nombre, clase, raza, stat_actual, competencias_armas, equipamiento_de_inicio, info_speed, info_size_description, info_lenguajes, info_traits, backstory]
+
 
 root = Tk()
 root.title("DnD")
@@ -260,9 +269,10 @@ style.theme_use("clam")  # mejor para personalizar
 
 pygame.init()
 pygame.mixer.init()
-sound = pygame.mixer.Sound("musica.mp3")
-sound.set_volume(0.05)
-sound.play()
+pygame.mixer.music.load("./musica.mp3")
+pygame.mixer.music.set_volume(0.05)
+pygame.mixer.music.play(loops=-1)
+
 
 main_container = Frame(root)
 main_container.pack(fill='both', expand=True)
@@ -380,6 +390,5 @@ guardar = ttk.Button(frm, text="Guardar personaje", command=mostrar_datos)
 guardar.grid(column=0, row=11, columnspan=2, padx=5, sticky="w")
 # EXCEL
 root_characters = "character.csv"
-
 
 root.mainloop()
