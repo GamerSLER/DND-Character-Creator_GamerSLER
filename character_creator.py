@@ -7,7 +7,6 @@ from tkinter import *
 from tkinter import ttk
 from tkinter.ttk import Combobox
 
-import pygame
 from playsound3 import playsound
 from PIL import Image, ImageTk
 import pygame
@@ -224,9 +223,11 @@ def mostrar_datos():
     print(nombre)
     print(clase)
     print(raza)
-    print(competencias_habilidades)
-    print(competencias_armas)
+    print(tipos_stats.ge)
+    print(mostrar_equipamiento())
     print(competencias_herramientas)
+    print(competencias_habilidades)
+    print(backstory.get("1.0", "end"))
 
 root = Tk()
 root.title("DnD")
@@ -284,8 +285,6 @@ prioridad_stats = {
     "Druid": ["wisdom", "constitution", "dexterity", "intelligence", "charisma", "strength"],
     "Bard": ["charisma", "dexterity", "constitution", "wisdom", "intelligence", "strength"]
 }
-nombre_stats = ["INT", "STR", "DEX", "WIS", "CON", "CHA"]
-
 nombre = ""
 clase = ""
 raza = ""
@@ -297,7 +296,9 @@ competencias_herramientas = []
 hit_die = None
 tiradas_de_salvacion = []
 equipamiento_de_comienzo = []
+nombre_stats = ["INT", "STR", "DEX", "WIS", "CON", "CHA"]
 tipos_stats = []
+backstory = ""
 
 ttk.Label(frm, text="Introduce nombre:").grid(column=0, row=0,columnspan=2)
 nombre_entry = ttk.Entry(frm, width=30)
@@ -348,6 +349,5 @@ guardar = ttk.Button(frm, text="Guardar personaje", command=mostrar_datos)
 guardar.grid(column=0, row=11, columnspan=2, padx=5, sticky="w")
 # EXCEL
 root_characters = "character.csv"
-nombre_personaje = nombre_entry.get()
 
 root.mainloop()
