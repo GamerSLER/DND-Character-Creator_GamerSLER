@@ -216,14 +216,14 @@ def mostrar_equipamiento():
 def mostrar_datos():
     #NOMBRE
     set_nombre()
-    print(nombre)
+    print(f"Nombre: {nombre}")
     #CLASE
-    print(clase)
+    print(f"Clase: {clase}")
     #RAZA
-    print(raza)
+    print(f"Raza: {raza}")
     #STATS
     for tipo, stat in stats:
-        print(stat)
+        print(f"{tipo}: {stat}")
     #COMPETENCIAS ARMAS
     competencias_armas = []
     for i in range(1, len(contenedor_competencias.winfo_children())):
@@ -232,7 +232,7 @@ def mostrar_datos():
         except:
             pass
     competencias_armas = join(competencias_armas, ", ")
-    print(competencias_armas)
+    print(f"competencias en armas: {competencias_armas}")
     #EQUIPAMIENTO INICIAL
     equipamiento_de_inicio = []
     for i in range(len(contenedor_equipamiento.winfo_children())):
@@ -240,13 +240,14 @@ def mostrar_datos():
             equipamiento_de_inicio.append(contenedor_equipamiento.winfo_children()[i].get())
         except:
             pass
-    print(equipamiento_de_inicio)
+    print(f"equipamiento de inicio: {equipamiento_de_inicio}")
     #INFO
-    print(info_speed)
-    print(info_lenguajes)
-    print(info_traits)
+    print(f"tamano: {info_size_description}")
+    print(f"velocidad: {info_speed}")
+    print(f"lenguajes:{info_lenguajes}")
+    print(f"Informacion demás:{info_traits}")
     #BACKSTORY
-    print(backstory.get("1.0", "end"))
+    print(f"Backstory:{backstory.get("1.0", "end")}")
 
 root = Tk()
 root.title("DnD")
@@ -378,5 +379,6 @@ guardar = ttk.Button(frm, text="Guardar personaje", command=mostrar_datos)
 guardar.grid(column=0, row=11, columnspan=2, padx=5, sticky="w")
 # EXCEL
 root_characters = "character.csv"
+
 
 root.mainloop()
