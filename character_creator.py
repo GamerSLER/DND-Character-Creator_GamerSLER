@@ -264,9 +264,10 @@ style.theme_use("clam")  # mejor para personalizar
 
 pygame.init()
 pygame.mixer.init()
-sound = pygame.mixer.Sound("musica.mp3")
-sound.set_volume(0.05)
-sound.play()
+pygame.mixer.music.load("./musica.mp3")
+pygame.mixer.music.set_volume(0.05)
+pygame.mixer.music.play(loops=-1)
+
 
 main_container = Frame(root)
 main_container.pack(fill='both', expand=True)
