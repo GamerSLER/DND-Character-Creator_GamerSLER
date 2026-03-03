@@ -248,6 +248,7 @@ def mostrar_datos():
     print(f"Informacion demás:{info_traits}")
     #BACKSTORY
     print(f"Backstory:{backstory.get("1.0", "end")}")
+    return [nombre, clase, raza, stat_actual, competencias_armas, equipamiento_de_inicio, info_speed, info_size_description, info_lenguajes, info_traits, backstory]
 
 root = Tk()
 root.title("DnD")
